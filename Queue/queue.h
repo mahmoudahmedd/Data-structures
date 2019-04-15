@@ -49,7 +49,7 @@ Queue<T>::Queue()
 }
 
 /**
- * Constructs a queue having ‘_intialSize’ elements whose values are ‘_value’
+ * Constructs a queue having â€˜_intialSizeâ€™ elements whose values are â€˜_valueâ€™
  * @param  T, int
  */
 template <class T>
@@ -117,7 +117,7 @@ void Queue<T>::push(T _value)
         this->capacity = this->capacity * 2 + 10; // Doubling the Size
         this->arr = new T[this->capacity]();
 
-        for(int i = 0; i < (this->capacity - 1) / 2; i++)
+        for(int i = 0; i < (this->capacity - 10) / 2; i++)
             this->arr[i] = temp[i];
     }
 
