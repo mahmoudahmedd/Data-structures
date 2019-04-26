@@ -37,22 +37,22 @@ private:
     int capacity;
     int count;       // Current size of pairs
 public:
-	// Constructor
+    // Constructor
     UnorderedMap();
 
-	// Member functions
-	void print();
+    // Member functions
+    void print();
 
-	// Hash policy
+    // Hash policy
     int hashFunction(K);
 
-	// Modifiers
+    // Modifiers
     void insert(K, V);
     V remove(K);
 
-	// Element access
-	V& operator[](const K);
-	V& at(K);
+    // Element access
+    V& operator[](const K);
+    V& at(K);
 
     // Capacity
     int size();
@@ -68,7 +68,7 @@ public:
 template <class K, class V>
 UnorderedMap<K, V>::UnorderedMap()
 {
-	this->dummy = new Element();
+    this->dummy = new Element();
     this->capacity = 10069;
     this->count = 0;
 
@@ -158,7 +158,7 @@ template <class K, class V>
 V& UnorderedMap<K, V>::operator[](const K _key)
 {
     int hashIndex = this->hashFunction(_key);
-	int counter   = 0;
+    int counter   = 0;
 
     while(this->table[hashIndex] != NULL)
     {
@@ -166,13 +166,13 @@ V& UnorderedMap<K, V>::operator[](const K _key)
             return this->dummy->value;
 
         if(this->table[hashIndex]->key == _key)
-		{
-			return this->table[hashIndex]->value;
-		}
+        {
+            return this->table[hashIndex]->value;
+        }
 
         hashIndex = (hashIndex + 1) % this->capacity;
     }
-		
+
     // If not found return dummy
     return this->dummy->value;
 }
