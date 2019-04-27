@@ -1,7 +1,7 @@
 /**
  *  @file    binary_search_tree.h
  *  @author  Mahmoud Ahmed Tawfik (@mahmoudahmedd)
- *  @date    27/04/2019
+ *  @date    25/04/2019
  *  @version 1.0
  */
 #pragma once
@@ -61,6 +61,7 @@ public:
     void insert(T);
     void remove();
     void destroy(Node*);
+    void flip(Node*);
 
     // Min/max
     T max();
@@ -123,15 +124,15 @@ bool BinarySearchTree<T>::find(T _value)
  * @return int
  */
 template <class T>
-int BinarySearchTree<T>::getHeight(Node* node)
+int BinarySearchTree<T>::getHeight(Node *_node)
 {
-    if (node == NULL)
+    if (_node == NULL)
         return 0;
     else
     {
         /* compute the height of each subtree */
-        int lheight = getHeight(node->leftChild);
-        int rheight = getHeight(node->rightChild);
+        int lheight = this->getHeight(_node->leftChild);
+        int rheight = this->getHeight(_node->rightChild);
 
         /* use the larger one */
         if (lheight > rheight)
@@ -265,37 +266,36 @@ typename BinarySearchTree<T>::Node* BinarySearchTree<T>::getParent(T _value)
  * @param Type
  */
 template <class T>
-void BinarySearchTree<T>::print(Type _t, Node* cur)
+void BinarySearchTree<T>::print(Type _t, Node *_cur)
 {
     if(_t == PREORDER)
     {
-        if (cur == NULL)
+        if (_cur == NULL)
             return;
 
-        cout << cur->data << " ";
-        print(_t, cur->leftChild);
-        print(_t, cur->rightChild);
+        cout << _cur->data << " ";
+        print(_t, _cur->leftChild);
+        print(_t, _cur->rightChild);
 
     }
     else if(_t == INORDER)
     {
-        if (cur == NULL)
+        if (_cur == NULL)
             return;
 
-        print(_t, cur->leftChild);
-        cout << cur->data << " ";
-        print(_t, cur->rightChild);
+        print(_t, _cur->leftChild);
+        cout << _cur->data << " ";
+        print(_t, _cur->rightChild);
     }
     else if(_t == POSTORDER)
     {
-        if (cur == NULL)
+        if (_cur == NULL)
             return;
 
-        print(_t, cur->leftChild);
-        print(_t, cur->rightChild);
-        cout << cur->data << " ";
+        print(_t, _cur->leftChild);
+        print(_t, _cur->rightChild);
+        cout << _cur->data << " ";
     }
-
 }
 
 /**
@@ -303,14 +303,14 @@ void BinarySearchTree<T>::print(Type _t, Node* cur)
  * @param Node
  */
 template <class T>
-void BinarySearchTree<T>::printLevelOrder(Node *root)
+void BinarySearchTree<T>::printLevelOrder(Node *_root)
 {
-    int h = getHeight(this->root);
+    int h = this->getHeight(_root);
 
     for (int i = 1; i <= h; i++)
     {
         cout << "LEVEL (" << i << ") ";
-        printGivenLevel(root, i);
+        printGivenLevel(_root, i);
         cout << endl;
     }
 }
@@ -338,17 +338,17 @@ void BinarySearchTree<T>::printInRange(T _low, T _high, Node* _cur)
  * @param T, T, Node
  */
 template <class T>
-void BinarySearchTree<T>::printGivenLevel(Node* root, int level)
+void BinarySearchTree<T>::printGivenLevel(Node* _root, int _level)
 {
-    if (root == NULL)
+    if (_root == NULL)
         return;
 
-    if (level == 1)
-        cout << root->data << " ";
-    else if (level > 1)
+    if (_level == 1)
+        cout << _root->data << " ";
+    else if (_level > 1)
     {
-        printGivenLevel(root->leftChild, level-1);
-        printGivenLevel(root->rightChild, level-1);
+        printGivenLevel(_root->leftChild, _level - 1);
+        printGivenLevel(_root->rightChild, _level - 1);
     }
 }
 
@@ -365,6 +365,28 @@ void BinarySearchTree<T>::destroy(Node *_node)
     destroy(_node->leftChild);
     destroy(_node->rightChild);
     delete _node;
+}
+
+/**
+ * Mirror of a BinarySearchTree T is another BinarySearchTree flip(T)
+ * @param Node
+ */
+template <class T>
+void BinarySearchTree<T>::flip(Node *_node)
+{
+    if (_node == NULL)
+        return;
+    else
+    {
+        Node *temp;
+
+        flip(_node->leftChild);
+        flip(_node->rightChild);
+
+        temp              = _node->leftChild;
+        _node->leftChild  = _node->rightChild;
+        _node->rightChild = temp;
+    }
 }
 
 /**
